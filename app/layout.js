@@ -36,8 +36,8 @@ const geistMono = Geist_Mono({
 export const metadata = {
   metadataBase: new URL("https://frame-studio.example"),
   title: {
-    default: "FRAME — Cinematic Production Studio",
-    template: "%s — FRAME",
+    default: "FRAME | Cinematic Production Studio",
+    template: "%s | FRAME",
   },
   description:
     "FRAME is an independent creative production studio making cinematic commercials, brand films, fashion campaigns and social content.",
@@ -49,7 +49,7 @@ export const metadata = {
     "fashion film",
   ],
   openGraph: {
-    title: "FRAME — Cinematic Production Studio",
+    title: "FRAME | Cinematic Production Studio",
     description:
       "We make brands impossible to ignore. Independent creative production studio.",
     type: "website",

@@ -6,12 +6,12 @@ import { ArrowUpRight } from "lucide-react";
 
 import SectionHeading from "@/components/section-heading";
 import { useSite } from "@/components/site-provider";
-import { clipReveal, fadeUp, ruleReveal } from "@/lib/animation";
+import { clipReveal, fadeUp, lineReveal, parallax, ruleReveal } from "@/lib/animation";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { projects } from "@/lib/data";
 
 /**
- * The grid is deliberately uneven — literal Tailwind strings (rather than
+ * The grid is deliberately uneven: literal Tailwind strings (rather than
  * interpolated ones) so the compiler can see every class at build time.
  */
 const LAYOUT = {
@@ -56,6 +56,11 @@ export default function WorkSection() {
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         ruleReveal(root.querySelectorAll("[data-rule]"), { trigger: root });
 
+        lineReveal(root.querySelectorAll("[data-line]"), {
+          trigger: root,
+          stagger: 0.05,
+        });
+
         clipReveal(root.querySelectorAll("[data-media]"), {
           stagger: 0.14,
           duration: 1.45,
@@ -64,6 +69,11 @@ export default function WorkSection() {
         fadeUp(root.querySelectorAll("[data-meta]"), {
           stagger: 0.1,
           y: 28,
+        });
+
+        // The image drifts inside its frame, so a still card still moves.
+        root.querySelectorAll("[data-parallax]").forEach((target) => {
+          parallax(target, { from: -6, to: 6 });
         });
       });
 
@@ -83,7 +93,7 @@ export default function WorkSection() {
         id="work-title"
         index="01"
         label="Selected work"
-        meta="2024 — 2025"
+        meta="2024-2025"
         lines={["Work that", "earns the", "second watch."]}
       />
 
@@ -95,13 +105,15 @@ export default function WorkSection() {
             <article key={project.id} className={`group relative ${layout.item}`}>
               <div className="relative overflow-hidden bg-coal">
                 <div data-media className={`relative w-full ${layout.ratio}`}>
-                  <Image
-                    src={project.cover.src}
-                    alt={project.cover.alt}
-                    fill
-                    sizes={layout.sizes}
-                    className="object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.045]"
-                  />
+                  <div data-parallax className="absolute inset-x-0 -inset-y-[8%]">
+                    <Image
+                      src={project.cover.src}
+                      alt={project.cover.alt}
+                      fill
+                      sizes={layout.sizes}
+                      className="object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.045]"
+                    />
+                  </div>
                 </div>
 
                 <span
@@ -130,7 +142,7 @@ export default function WorkSection() {
 
                 <p className="mt-3 text-sm text-ash">
                   <span className={accent.text}>{project.category}</span>
-                  <span className="text-smoke"> — {project.client}</span>
+                  <span className="text-smoke"> | {project.client}</span>
                 </p>
 
                 <p className="mt-3 max-w-[42ch] font-serif text-lg italic text-smoke">
@@ -149,7 +161,7 @@ export default function WorkSection() {
                 className="absolute inset-0 z-20 cursor-pointer"
               >
                 <span className="sr-only">
-                  Open the {project.title} case study — {project.category}
+                  Open the {project.title} case study | {project.category}
                 </span>
               </button>
             </article>

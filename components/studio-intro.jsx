@@ -23,7 +23,7 @@ export default function StudioIntro() {
 
         lineReveal(root.querySelectorAll("[data-headline] [data-line]"), {
           trigger: root,
-          stagger: 0.09,
+          stagger: 0.05,
         });
 
         fadeUp(root.querySelectorAll("[data-copy]"), {
@@ -41,6 +41,28 @@ export default function StudioIntro() {
           trigger: root.querySelector("[data-stats]"),
           stagger: 0.08,
           y: 24,
+        });
+
+        /* The numbers climb to their value as the row arrives. */
+        root.querySelectorAll("[data-count]").forEach((element) => {
+          const to = Number(element.dataset.to);
+          const from = Number(element.dataset.from ?? 0);
+          const suffix = element.dataset.suffix ?? "";
+          const counter = { value: from };
+
+          gsap.to(counter, {
+            value: to,
+            duration: 1.6,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: element,
+              start: "top 92%",
+              once: true,
+            },
+            onUpdate: () => {
+              element.textContent = `${Math.round(counter.value)}${suffix}`;
+            },
+          });
         });
 
         parallax(root.querySelector("[data-parallax='portrait']"), {
@@ -82,11 +104,13 @@ export default function StudioIntro() {
           as="h2"
           id="studio-title"
           lines={["Every brand", "has a story."]}
+          splitWords
           className="display-condensed font-display text-display-md font-extrabold uppercase text-bone"
         />
         <SplitLines
           as="p"
           lines={["We make people feel it."]}
+          splitWords
           className="display-condensed mt-2 font-serif text-display-md italic text-outline"
         />
       </div>
@@ -98,7 +122,7 @@ export default function StudioIntro() {
         >
           <p className="text-lg leading-relaxed text-ash sm:text-xl">
             FRAME is a small studio with an unusually long memory. We have made
-            films for car makers, couture houses and a chapel in Basel — and the
+            films for car makers, couture houses and a chapel in Basel, and the
             brief is always the same underneath: find the one true thing about
             this brand and put a camera in front of it.
           </p>
@@ -127,7 +151,7 @@ export default function StudioIntro() {
             </div>
           </div>
           <p className="label mt-4 text-smoke">
-            On set — Soho, day three of a four-day build.
+            On set: Soho, day three of a four-day build.
           </p>
         </div>
 
@@ -168,7 +192,18 @@ export default function StudioIntro() {
           <div key={stat.label} data-stat className="flex flex-col gap-3">
             <dt className="sr-only">{stat.label}</dt>
             <dd className="display-condensed font-display text-4xl font-extrabold text-bone sm:text-5xl">
-              {stat.value}
+              {stat.count ? (
+                <span
+                  data-count
+                  data-to={stat.count.to}
+                  data-from={stat.count.from ?? 0}
+                  data-suffix={stat.count.suffix ?? ""}
+                >
+                  {stat.value}
+                </span>
+              ) : (
+                stat.value
+              )}
             </dd>
             <p aria-hidden="true" className="label text-smoke">
               {stat.label}

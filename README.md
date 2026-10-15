@@ -1,4 +1,4 @@
-# FRAME — Cinematic Creative Production Studio
+# FRAME | Cinematic Creative Production Studio
 
 A single-page, client-presentation-ready marketing site for a fictional cinematic creative production studio. Built with Next.js (App Router), JavaScript (no TypeScript), Tailwind CSS, GSAP + ScrollTrigger + `@gsap/react`, Motion for React, Lenis, and shadcn/ui.
 
@@ -9,7 +9,7 @@ A single-page, client-presentation-ready marketing site for a fictional cinemati
 - [GSAP](https://gsap.com/) + [ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/) + [`@gsap/react`](https://gsap.com/docs/v3/React/) for smooth, coordinated animations
 - [Motion for React](https://motion.dev/) for lightweight UI transitions (mobile menu)
 - [Lenis](https://lenis.darkroom.engineering/) (ticker-driven, synced to ScrollTrigger)
-- [shadcn/ui](https://ui.shadcn.com/) — dialog + form primitives
+- [shadcn/ui](https://ui.shadcn.com/) for dialog + form primitives
 - [Lucide React](https://lucide.dev/) icons
 
 ## Quick start
@@ -34,21 +34,22 @@ npm run start
 - Opt-in horizontal storytelling (pinned, scroll-driven) for large screens; vertical fallback on mobile and when reduced-motion
 - Lenis synchronized to ScrollTrigger with `gsap.ticker`; reduced-motion disables Lenis entirely
 - Scroll locking centralized in `SiteProvider` (only `menuOpen` or open project lock the document)
-- Magnetic CTAs, split-line masked reveals, clip-mask image reveals, parallax, and cursor-aware service hover previews
+- Magnetic CTAs, word-level masked headline reveals, clip-mask image reveals, in-frame image parallax, and cursor-aware service hover previews
+- Character-roll hover on buttons (pure CSS, degrades to plain text) and a marquee that skews and accelerates with scroll velocity
 - A11y: skip link, landmark headings/ids resolved, all images have alt text, focus-visible styles, prefers-reduced-motion respected
 - Responsive at 1440/1280/768/390/360; no horizontal overflow; no console or hydration errors
 
 ## Architecture
 
-- `app/` — layout, global styles, single page composition
-- `components/` — site sections and reusable UI primitives (`split-lines`, `magnetic`, `ticker`, shadcn `dialog/input/textarea/button`)
-- `lib/` — `gsap` registry (`ScrollTrigger`, `useGSAP` via `@gsap/react`), `animation` helpers, `data` (all copy + projects/services/process + placeholder contact details), `hooks` (`useMediaQuery`, `useHasPointer`)
-- `public/media/` — 29 local curated images (no remote runtime dependency)
+- `app/`: layout, global styles, single page composition
+- `components/`: site sections and reusable UI primitives (`split-lines`, `flip-text`, `magnetic`, `ticker`, shadcn `dialog/input/textarea/button`)
+- `lib/`: `gsap` registry (`ScrollTrigger`, `useGSAP` via `@gsap/react`), `animation` helpers, `data` (all copy + projects/services/process + placeholder contact details), `hooks` (`useMediaQuery`, `useHasPointer`)
+- `public/media/`: 29 local curated images (no remote runtime dependency)
 
 ## Known limitations
 
 - **No video assets.** The "reel" callouts (`SITE.showreelNote`) and hero are image-based (unsplash). A real showreel would replace the hero media and update copy.
-- **Demo contact form.** Submitting does **not** send an email; the success state explicitly states nothing was sent. Integrate a form handler (e.g. Resend, Formspree, server action) to go live.
+- **Contact form is not wired up.** Submitting does not send an email; the success state confirms the enquiry and tells the sender they will be contacted shortly. Integrate a form handler (e.g. Resend, Formspree, server action) to go live.
 - **Placeholder contact.** `lib/data.js` contains placeholder `mailto:` and social URLs (`https://instagram.com/`, `https://vimeo.com/`, `https://linkedin.com/`). Replace before client handoff.
 - **Single-tone cinematic palette.** A monochrome-lean palette is deliberate; no elaborate light mode. Focus states are high contrast and meet in-page needs.
 - **No dedicated lightbox gallery.** Project detail uses a Dialog (with navigation) rather than a full image lightbox.

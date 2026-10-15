@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 
 import SectionHeading from "@/components/section-heading";
-import { clipReveal, fadeUp, ruleReveal } from "@/lib/animation";
+import { clipReveal, fadeUp, lineReveal, parallax, ruleReveal } from "@/lib/animation";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { processStages } from "@/lib/data";
 
@@ -22,6 +22,11 @@ export default function Process() {
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         ruleReveal(root.querySelectorAll("[data-rule]"), { trigger: root });
 
+        lineReveal(root.querySelectorAll("[data-line]"), {
+          trigger: root,
+          stagger: 0.05,
+        });
+
         root.querySelectorAll("[data-stage]").forEach((stage) => {
           clipReveal(stage.querySelectorAll("[data-stage-media]"), {
             trigger: stage,
@@ -32,6 +37,10 @@ export default function Process() {
             start: "top 84%",
             stagger: 0.07,
             y: 28,
+          });
+          parallax(stage.querySelector("[data-stage-parallax]"), {
+            from: -6,
+            to: 6,
           });
         });
       });
@@ -113,13 +122,15 @@ export default function Process() {
                 data-stage-media
                 className="relative aspect-[16/10] w-full overflow-hidden bg-coal"
               >
-                <Image
-                  src={stage.image.src}
-                  alt={stage.image.alt}
-                  fill
-                  sizes="(min-width: 768px) 64vw, 92vw"
-                  className="object-cover"
-                />
+                <div data-stage-parallax className="absolute inset-x-0 -inset-y-[8%]">
+                  <Image
+                    src={stage.image.src}
+                    alt={stage.image.alt}
+                    fill
+                    sizes="(min-width: 768px) 64vw, 92vw"
+                    className="object-cover"
+                  />
+                </div>
               </div>
 
               <div className="grid gap-6 sm:grid-cols-12 sm:gap-8">

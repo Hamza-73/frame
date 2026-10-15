@@ -80,7 +80,7 @@ export default function Footer() {
 
         <div className="flex flex-wrap items-end justify-between gap-6 border-t border-bone/10 pt-6">
           <p className="label max-w-[36ch] text-smoke">
-            © 2026 {SITE.name} — {SITE.descriptor}. All rights reserved.
+            © 2026 {SITE.name}. {SITE.descriptor}. All rights reserved.
           </p>
 
           <p className="label hidden text-smoke sm:block">

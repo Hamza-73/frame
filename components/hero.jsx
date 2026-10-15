@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 
 import Magnetic from "@/components/magnetic";
+import FlipText from "@/components/flip-text";
 import SplitLines from "@/components/split-lines";
 import { useSite } from "@/components/site-provider";
 import { EASE, gsap, useGSAP } from "@/lib/gsap";
@@ -22,7 +23,7 @@ export default function Hero() {
   const { ready, scrollTo } = useSite();
   const rootRef = useRef(null);
 
-  /* Coordinated entrance — held until the preloader starts to lift. */
+  /* Coordinated entrance: held until the preloader starts to lift. */
   useGSAP(
     () => {
       if (!ready) return undefined;
@@ -49,7 +50,13 @@ export default function Hero() {
           })
           .from(
             lines,
-            { yPercent: 118, duration: 1.5, stagger: 0.085, ease: EASE.expo },
+            {
+              yPercent: 130,
+              skewY: 5,
+              duration: 1.2,
+              stagger: 0.035,
+              ease: EASE.expo,
+            },
             0.1,
           )
           .from(
@@ -69,7 +76,8 @@ export default function Hero() {
     { scope: rootRef, dependencies: [ready], revertOnUpdate: true },
   );
 
-  /* Slow vertical drift on the backdrop only. */
+  /* Slow vertical drift on the backdrop, and the copy lifts away as the
+     section is left behind. */
   useGSAP(
     () => {
       const root = rootRef.current;
@@ -93,6 +101,18 @@ export default function Hero() {
             },
           },
         );
+
+        gsap.to(root.querySelector("[data-hero-content]"), {
+          yPercent: -9,
+          autoAlpha: 0.12,
+          ease: "none",
+          scrollTrigger: {
+            trigger: root,
+            start: "top top",
+            end: "bottom top",
+            scrub: 0.6,
+          },
+        });
       });
 
       return () => mm.revert();
@@ -124,7 +144,10 @@ export default function Hero() {
         />
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col justify-between gap-16 px-5 pb-12 pt-28 sm:px-8 sm:pb-14 sm:pt-32">
+      <div
+        data-hero-content
+        className="relative z-10 flex flex-1 flex-col justify-between gap-16 px-5 pb-12 pt-28 sm:px-8 sm:pb-14 sm:pt-32"
+      >
         <div className="flex flex-wrap items-start justify-between gap-6">
           <p data-hero-meta className="label max-w-[22ch] text-ash">
             {SITE.descriptor}
@@ -147,6 +170,7 @@ export default function Hero() {
             as="h1"
             id="hero-title"
             lines={HEADLINE}
+            splitWords
             className="display-condensed max-w-[16ch] font-display text-display-lg font-extrabold uppercase text-bone"
             lineClassName="uppercase"
           />
@@ -162,9 +186,9 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={() => scrollTo("#work")}
-                  className="group inline-flex items-center gap-3 border border-bone bg-bone px-6 py-3.5 text-void transition-colors duration-300 hover:bg-lime hover:border-lime"
+                  className="flip-host group inline-flex items-center gap-3 border border-bone bg-bone px-6 py-3.5 text-void transition-colors duration-300 hover:bg-lime hover:border-lime"
                 >
-                  <span className="label">Selected work</span>
+                  <FlipText text="Selected work" className="label" />
                   <ArrowUpRight
                     className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     aria-hidden="true"

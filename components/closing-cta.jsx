@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 
 import Magnetic from "@/components/magnetic";
+import FlipText from "@/components/flip-text";
 import SplitLines from "@/components/split-lines";
 import { useSite } from "@/components/site-provider";
 import { gsap, useGSAP } from "@/lib/gsap";
@@ -38,9 +39,9 @@ export default function ClosingCta() {
         );
 
         gsap.from(root.querySelectorAll("[data-line]"), {
-          yPercent: 118,
-          duration: 1.4,
-          stagger: 0.1,
+          yPercent: 130,
+          duration: 1.3,
+          stagger: 0.05,
           ease: "expo.out",
           scrollTrigger: { trigger: root, start: "top 72%", once: true },
         });
@@ -87,6 +88,7 @@ export default function ClosingCta() {
           as="h2"
           id="cta-title"
           lines={["Got a story", "worth telling?"]}
+          splitWords
           className="display-condensed max-w-[14ch] font-display text-display-lg font-extrabold uppercase text-bone"
         />
 
@@ -102,9 +104,9 @@ export default function ClosingCta() {
               <button
                 type="button"
                 onClick={() => scrollTo("#contact")}
-                className="group inline-flex items-center gap-3 border border-lime bg-lime px-7 py-4 text-void transition-colors duration-300 hover:bg-bone hover:border-bone"
+                className="flip-host group inline-flex items-center gap-3 border border-lime bg-lime px-7 py-4 text-void transition-colors duration-300 hover:bg-bone hover:border-bone"
               >
-                <span className="label">Start a project</span>
+                <FlipText text="Start a project" className="label" />
                 <ArrowUpRight
                   className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   aria-hidden="true"

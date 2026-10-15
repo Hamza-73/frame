@@ -5,7 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 
 import ContactForm from "@/components/contact-form";
 import SectionHeading from "@/components/section-heading";
-import { fadeUp, ruleReveal } from "@/lib/animation";
+import { fadeUp, lineReveal, ruleReveal } from "@/lib/animation";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { CONTACT, SITE } from "@/lib/data";
 
@@ -21,6 +21,10 @@ export default function Contact() {
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         ruleReveal(root.querySelectorAll("[data-rule]"), { trigger: root });
+        lineReveal(root.querySelectorAll("[data-line]"), {
+          trigger: root,
+          stagger: 0.05,
+        });
         fadeUp(root.querySelectorAll("[data-contact-block]"), {
           trigger: root,
           stagger: 0.08,
@@ -100,7 +104,7 @@ export default function Contact() {
             data-contact-block
             className="max-w-[40ch] border-t border-bone/10 pt-6 text-sm text-smoke"
           >
-            {SITE.name} — {SITE.descriptor.toLowerCase()}, {SITE.locations}.
+            {SITE.name}. {SITE.descriptor.toLowerCase()}, {SITE.locations}.
           </p>
         </div>
 

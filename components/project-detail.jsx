@@ -112,7 +112,7 @@ function DetailPanel({ project, onNavigate }) {
               <div className="flex flex-col gap-2">
                 <dt className="label text-smoke">Year &amp; location</dt>
                 <dd className="text-bone">
-                  {project.year} — {project.location}
+                  {project.year} | {project.location}
                 </dd>
               </div>
               <div className="rule" />

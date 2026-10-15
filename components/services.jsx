@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 
 import SectionHeading from "@/components/section-heading";
-import { fadeUp, ruleReveal } from "@/lib/animation";
+import { fadeUp, lineReveal, ruleReveal } from "@/lib/animation";
 import { useHasPointer } from "@/lib/hooks";
 import { EASE, gsap, useGSAP } from "@/lib/gsap";
 import { services } from "@/lib/data";
@@ -24,6 +24,10 @@ export default function Services() {
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         ruleReveal(root.querySelectorAll("[data-rule]"), { trigger: root });
+        lineReveal(root.querySelectorAll("[data-line]"), {
+          trigger: root,
+          stagger: 0.05,
+        });
         fadeUp(root.querySelectorAll("[data-row]"), {
           trigger: root,
           stagger: 0.08,
@@ -32,7 +36,7 @@ export default function Services() {
       });
 
       /* The floating preview trails the cursor. Only the translation is
-         animated here — opacity lives in CSS so there is nothing to revert. */
+         animated here; opacity lives in CSS so there is nothing to revert. */
       mm.add(
         "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
         () => {
@@ -122,7 +126,7 @@ export default function Services() {
       </ul>
 
       <p className="mt-10 max-w-[54ch] text-sm text-smoke">
-        Need something that is not on the list? Say so — the studio was built on
+        Need something that is not on the list? Say so; the studio was built on
         briefs that did not fit a box.
       </p>
 

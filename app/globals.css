@@ -3,7 +3,7 @@
 @import "shadcn/tailwind.css";
 
 /* ------------------------------------------------------------------
-   FRAME — design system
+   FRAME design system
    A deliberately single-mode (dark) cinematic palette.
 ------------------------------------------------------------------- */
 
@@ -19,7 +19,7 @@
   --color-ash: #a6acb3;
   --color-smoke: #787e86;
 
-  /* Accents — used sparingly */
+  /* Accents, used sparingly */
   --color-lime: #c8f560;
   --color-ember: #ff5a1f;
 
@@ -233,11 +233,43 @@
     transform: scaleX(1);
   }
 
+  /* Character roll for buttons and links. Each glyph carries a text-shadow
+     duplicate one line above it, so translating the glyph makes the letter
+     appear to flip and its copy rise into the same slot. Pure CSS, so it still
+     reads as plain text with no JavaScript. */
+  .flip {
+    display: inline-block;
+    overflow: clip;
+    line-height: 1.2;
+    padding-block: 0.08em;
+  }
+
+  .flip__char {
+    display: inline-block;
+    white-space: pre;
+    text-shadow: 0 -4.5em 0 currentColor;
+    transition: transform 0.55s var(--ease-frame);
+    transition-delay: calc(var(--i, 0) * 0.018s);
+  }
+
+  .flip-host:hover .flip__char,
+  .flip-host:focus-visible .flip__char {
+    transform: translateY(4.5em);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flip__char {
+      text-shadow: none;
+      transform: none;
+      transition: none;
+    }
+  }
+
   /* ------------------------------------------------------------------
      Horizontal storytelling
      The sideways layout is opt-in. GSAP adds [data-story-mode="horizontal"]
      only once it has confirmed a wide viewport with no reduced-motion
-     preference. Until then — and if scripts never run at all — the panels
+     preference. Until then, and if scripts never run at all, the panels
      simply stack, so nothing is ever stranded off-screen.
      ------------------------------------------------------------------ */
   .story-track {
@@ -309,7 +341,7 @@
 
 /**
  * Pure-CSS escape hatch: if JavaScript never runs, the preloader cannot dismiss
- * itself, so it removes itself on a timer instead. Harmless when GSAP works —
+ * itself, so it removes itself on a timer instead. Harmless when GSAP works,
  * the element is unmounted long before this fires.
  */
 @utility preloader-fallback {

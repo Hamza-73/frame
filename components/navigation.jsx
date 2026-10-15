@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 
 import Magnetic from "@/components/magnetic";
+import FlipText from "@/components/flip-text";
 import { useSite } from "@/components/site-provider";
 import { EASE, gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { CONTACT, NAV_LINKS, SITE } from "@/lib/data";
@@ -106,7 +107,7 @@ export default function Navigation() {
             href="#main"
             onClick={(event) => go(event, 0)}
             className="display-condensed shrink-0 font-display text-xl font-extrabold uppercase leading-none tracking-[-0.02em] text-bone"
-            aria-label={`${SITE.name} — back to top`}
+            aria-label={`${SITE.name}: back to top`}
           >
             {SITE.name}
           </a>
@@ -132,9 +133,9 @@ export default function Navigation() {
               <a
                 href="#contact"
                 onClick={startProject}
-                className="group inline-flex items-center gap-2 border border-bone/25 px-4 py-2.5 text-bone transition-colors duration-300 hover:border-lime hover:bg-lime hover:text-void"
+                className="flip-host group inline-flex items-center gap-2 border border-bone/25 px-4 py-2.5 text-bone transition-colors duration-300 hover:border-lime hover:bg-lime hover:text-void"
               >
-                <span className="label">Start a project</span>
+                <FlipText text="Start a project" className="label" />
                 <ArrowUpRight
                   className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   aria-hidden="true"
@@ -211,9 +212,9 @@ export default function Navigation() {
               <a
                 href="#contact"
                 onClick={startProject}
-                className="inline-flex items-center justify-between gap-3 border border-lime bg-lime px-5 py-4 text-void"
+                className="flip-host inline-flex items-center justify-between gap-3 border border-lime bg-lime px-5 py-4 text-void"
               >
-                <span className="label">Start a project</span>
+                <FlipText text="Start a project" className="label" />
                 <ArrowUpRight className="size-4" aria-hidden="true" />
               </a>
 

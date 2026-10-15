@@ -9,6 +9,7 @@ export default function SectionHeading({
   label,
   lines,
   meta,
+  splitWords = true,
   headingClassName = "font-display text-display-md font-extrabold tracking-[-0.03em]",
   className = "",
   id,
@@ -29,6 +30,7 @@ export default function SectionHeading({
         as="h2"
         id={id}
         lines={lines}
+        splitWords={splitWords}
         className={`mt-10 max-w-[18ch] text-balance text-bone ${headingClassName}`}
       />
     </header>

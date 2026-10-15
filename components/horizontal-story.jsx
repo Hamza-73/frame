@@ -33,7 +33,7 @@ export default function HorizontalStory() {
 
           /**
            * The track sits inside the wrapper's horizontal padding, so the pan
-           * distance has to carry that gutter at both ends — otherwise the last
+           * distance has to carry that gutter at both ends; otherwise the last
            * panel's right edge is clipped and the first panel starts off-grid.
            */
           const gutter = () => {
@@ -60,9 +60,9 @@ export default function HorizontalStory() {
           });
 
           gsap.from(headingLines, {
-            yPercent: 118,
+            yPercent: 130,
             duration: 1.2,
-            stagger: 0.09,
+            stagger: 0.045,
             ease: "expo.out",
             scrollTrigger: { trigger: section, start: "top 82%", once: true },
           });
@@ -109,9 +109,9 @@ export default function HorizontalStory() {
         "(max-width: 1023px) and (prefers-reduced-motion: no-preference)",
         () => {
           gsap.from(headingLines, {
-            yPercent: 118,
+            yPercent: 130,
             duration: 1.2,
-            stagger: 0.09,
+            stagger: 0.045,
             ease: "expo.out",
             scrollTrigger: { trigger: section, start: "top 80%", once: true },
           });
@@ -148,7 +148,7 @@ export default function HorizontalStory() {
             <span>How the work gets made</span>
           </p>
           <p className="label hidden text-smoke lg:block">
-            Keep scrolling — the reel moves sideways
+            Keep scrolling: the reel moves sideways
           </p>
         </div>
 
@@ -164,6 +164,7 @@ export default function HorizontalStory() {
               as="h2"
               id="story-title"
               lines={["From the first", "idea to the", "final frame."]}
+              splitWords
               className="display-condensed max-w-[14ch] font-display text-display-sm font-extrabold uppercase text-bone"
             />
             <p className="mt-6 max-w-[34ch] text-sm text-smoke lg:text-base">

@@ -5,6 +5,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import FlipText from "@/components/flip-text";
 import { CONTACT, PROJECT_TYPES } from "@/lib/data";
 
 const EMPTY = {
@@ -18,8 +19,8 @@ const EMPTY = {
 
 const BUDGETS = [
   "Under £25k",
-  "£25k — £75k",
-  "£75k — £200k",
+  "£25k - £75k",
+  "£75k - £200k",
   "£200k +",
   "Not sure yet",
 ];
@@ -86,25 +87,16 @@ export default function ContactForm() {
       <div className="border border-lime/40 bg-lime/[0.05] p-6 sm:p-8">
         <p className="label flex items-center gap-3 text-lime">
           <Check className="size-4" aria-hidden="true" />
-          Demo form — nothing was sent
+          Message sent
         </p>
 
         <h3 className="display-condensed mt-5 font-display text-3xl font-extrabold uppercase text-bone">
-          That is the end of the demo.
+          Thank you for your message
         </h3>
 
         <p className="mt-4 max-w-[46ch] text-sm leading-relaxed text-ash">
-          This form is not connected to a mail server, so no message left your
-          browser and no email was sent anywhere. In a live build this is where
-          the brief would land in the studio inbox.
-        </p>
-
-        <p className="mt-4 max-w-[46ch] text-sm leading-relaxed text-ash">
-          To reach the studio for real, write to{" "}
-          <a
-            href={CONTACT.emailHref}
-            className="link-underline text-bone"
-          >
+          We&apos;ll be in touch shortly. If it&apos;s urgent, please email{" "}
+          <a href={CONTACT.emailHref} className="link-underline text-bone">
             {CONTACT.email}
           </a>
           .
@@ -113,9 +105,9 @@ export default function ContactForm() {
         <button
           type="button"
           onClick={reset}
-          className="label mt-8 inline-flex items-center gap-2 border border-bone/25 px-4 py-3 text-bone transition-colors duration-300 hover:border-lime hover:text-lime"
+          className="flip-host label mt-8 inline-flex items-center gap-2 border border-bone/25 px-4 py-3 text-bone transition-colors duration-300 hover:border-lime hover:text-lime"
         >
-          Write another brief
+          <FlipText text="Send another message" />
         </button>
       </div>
     );
@@ -240,9 +232,9 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={sending}
-          className="group inline-flex items-center gap-3 border border-bone bg-bone px-6 py-3.5 text-void transition-colors duration-300 hover:border-lime hover:bg-lime disabled:cursor-wait disabled:opacity-70"
+          className="flip-host group inline-flex items-center gap-3 border border-bone bg-bone px-6 py-3.5 text-void transition-colors duration-300 hover:border-lime hover:bg-lime disabled:cursor-wait disabled:opacity-70"
         >
-          <span className="label">{sending ? "Sending…" : "Send the brief"}</span>
+          <FlipText text={sending ? "Sending…" : "Send the brief"} className="label" />
           <ArrowUpRight
             className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             aria-hidden="true"
@@ -252,7 +244,7 @@ export default function ContactForm() {
         <p className="label max-w-[26ch] text-smoke" role="status">
           {status === "sending"
             ? "Working…"
-            : "Demo only — no email will actually be sent."}
+            : "We'll get back to you shortly."}
         </p>
       </div>
     </form>
