@@ -1,26 +1,369 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ------------------------------------------------------------------
+   FRAME — design system
+   A deliberately single-mode (dark) cinematic palette.
+------------------------------------------------------------------- */
+
+@theme {
+  /* Surfaces, darkest to lightest */
+  --color-void: #08090a;
+  --color-ink: #0b0d0f;
+  --color-coal: #121417;
+  --color-edge: #1e2126;
+
+  /* Type */
+  --color-bone: #ece7df;
+  --color-ash: #a6acb3;
+  --color-smoke: #787e86;
+
+  /* Accents — used sparingly */
+  --color-lime: #c8f560;
+  --color-ember: #ff5a1f;
+
+  /* Fluid editorial type scale */
+  --text-display-sm: clamp(2.5rem, 8vw, 4.5rem);
+  --text-display-md: clamp(3rem, 10vw, 7rem);
+  --text-display-lg: clamp(3.25rem, 13vw, 11rem);
+
+  --ease-frame: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
+  /* next/font variables */
+  --font-sans: var(--font-inter-tight);
+  --font-display: var(--font-archivo);
+  --font-serif: var(--font-instrument);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-archivo);
+
+  /* shadcn/ui semantic tokens mapped onto the cinematic palette */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.25);
+  --radius-2xl: calc(var(--radius) * 1.5);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: #08090a;
+  --foreground: #ece7df;
+  --card: #0d0f11;
+  --card-foreground: #ece7df;
+  --popover: #0d0f11;
+  --popover-foreground: #ece7df;
+  --primary: #ece7df;
+  --primary-foreground: #08090a;
+  --secondary: #16191d;
+  --secondary-foreground: #ece7df;
+  --muted: #16191d;
+  --muted-foreground: #8b9097;
+  --accent: #c8f560;
+  --accent-foreground: #08090a;
+  --destructive: #e5484d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(236, 231, 223, 0.12);
+  --input: rgba(236, 231, 223, 0.14);
+  --ring: rgba(200, 245, 96, 0.6);
+  --radius: 0.25rem;
+
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply font-sans;
+    /* `clip` (not `hidden`) so `position: sticky` keeps working */
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
+    /* Reserve the scrollbar so locking the page (overlays) never shifts layout */
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  html.is-scroll-locked,
+  html.is-scroll-locked body {
+    overflow: hidden;
+  }
+
+  ::selection {
+    background: var(--color-lime);
+    color: var(--color-void);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-lime);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Firefox / WebKit scrollbar */
+  * {
+    scrollbar-color: #2a2e34 #08090a;
+    scrollbar-width: thin;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #08090a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #24282e;
+    border: 3px solid #08090a;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Small uppercase editorial metadata label */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .rule {
+    height: 1px;
+    background: color-mix(in oklab, var(--color-bone) 12%, transparent);
+  }
+
+  /* Archivo carries a width axis; narrowing it is what gives the wordmarks
+     their compressed, credit-sequence feel. */
+  .display-condensed {
+    font-variation-settings: "wdth" 88;
+    letter-spacing: -0.035em;
+  }
+
+  /* Oversized outlined type used as an art-direction device */
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in oklab, var(--color-bone) 24%, transparent);
+  }
+
+  .text-outline-faint {
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in oklab, var(--color-bone) 12%, transparent);
+  }
+
+  /* Filmic grain, applied once over the whole document */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    z-index: 95;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: frame-grain 6s steps(6) infinite;
+  }
+
+  /* Masked line reveal: the wrapper clips, the inner span is animated by GSAP */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.25em;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-frame);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  /* ------------------------------------------------------------------
+     Horizontal storytelling
+     The sideways layout is opt-in. GSAP adds [data-story-mode="horizontal"]
+     only once it has confirmed a wide viewport with no reduced-motion
+     preference. Until then — and if scripts never run at all — the panels
+     simply stack, so nothing is ever stranded off-screen.
+     ------------------------------------------------------------------ */
+  .story-track {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  .story-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-top: 1px solid color-mix(in oklab, var(--color-bone) 12%, transparent);
+    padding-top: 1.5rem;
+  }
+
+  .story-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    overflow: hidden;
+    background: var(--color-coal);
+  }
+
+  @media (min-width: 1024px) {
+    .story[data-story-mode="horizontal"] {
+      height: 100svh;
+    }
+
+    .story[data-story-mode="horizontal"] .story-track {
+      width: max-content;
+      height: 58svh;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 3vw;
+      will-change: transform;
+    }
+
+    .story[data-story-mode="horizontal"] .story-heading {
+      display: flex;
+      flex: none;
+      flex-direction: column;
+      justify-content: center;
+      width: 40vw;
+      padding-right: 1.5rem;
+    }
+
+    .story[data-story-mode="horizontal"] .story-panel {
+      flex: none;
+      width: 34vw;
+      height: 100%;
+      border-top: 0;
+      border-left: 1px solid color-mix(in oklab, var(--color-bone) 12%, transparent);
+      padding-top: 0;
+      padding-left: 1.75rem;
+    }
+
+    .story[data-story-mode="horizontal"] .story-media {
+      aspect-ratio: auto;
+      min-height: 0;
+      flex: 1;
+    }
+  }
+}
+
+@utility marquee-track {
+  animation: frame-marquee 46s linear infinite;
+}
+
+/**
+ * Pure-CSS escape hatch: if JavaScript never runs, the preloader cannot dismiss
+ * itself, so it removes itself on a timer instead. Harmless when GSAP works —
+ * the element is unmounted long before this fires.
+ */
+@utility preloader-fallback {
+  animation: frame-preloader-dismiss 0.5s ease 5s forwards;
+}
+
+@keyframes frame-preloader-dismiss {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes frame-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes frame-grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-4%, 3%);
+  }
+  40% {
+    transform: translate(3%, -4%);
+  }
+  60% {
+    transform: translate(-3%, -3%);
+  }
+  80% {
+    transform: translate(4%, 2%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain::after {
+    animation: none;
+  }
 }
